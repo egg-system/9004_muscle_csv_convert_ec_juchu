@@ -38,7 +38,7 @@ const convertAsshukugaku = (fromValue) => {
 
 const truncateForFullChar = (fromValue, size) => {
   var b = 0;
-  for (var i = 0;  i < fromValue.length; i++) {
+  for (var i = 0; i < fromValue.length; i++) {
     //半角カナ
     var reg = new RegExp(/^[ｦ-ﾟ]*$/);
     if (reg.test(fromValue.charAt(i))) {
@@ -64,6 +64,16 @@ const convertShoukyakuShinkokuType = (fromValue) => {
     value = 0
   }
   return value
+}
+
+const convertShinkokusakiCode = (fromValue) => {
+  switch (fromValue) {
+    case '13104':
+      return '0001'
+    case '7212':
+      return '0002'
+  }
+  return ''
 }
 
 module.exports = {
@@ -531,10 +541,10 @@ module.exports = {
         },
         {
           name: '申告先コード',
-          from: '償却資産申告用資産種類',
+          from: ['償却資産申告用資産種類', '申告先市町村コード'],
           convert: (fromValue) => {
-            let shinkokuType = convertShoukyakuShinkokuType(fromValue)
-            return (shinkokuType == 0) ? "" : '0001'
+            let shinkokuType = convertShoukyakuShinkokuType(fromValue[0])
+            return (shinkokuType == 0) ? "" : convertShinkokusakiCode(fromValue[1])
           }
         },
         {
