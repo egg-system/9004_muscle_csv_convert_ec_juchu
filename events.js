@@ -24,6 +24,5 @@ function convert() {
     }
   ).then(result => {
     executeCsvConvert(result.filePaths[0]); //複数選択の可能性もあるので配列となる。
-    alert('ファイルを変換しました。')
   })
 }

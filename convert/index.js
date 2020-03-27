@@ -18,18 +18,23 @@ const exportCsv = (data) => {
   csvParser.stringify(data, {
     quoted: true
   }, (error, rawOutput) => {
-    const outputCsv = path.join(app.getPath('desktop'), 'EC受注データ_' + moment().format('YYYYMMDDHHmmss') + '.csv')
+    const fileName = 'EC受注データ_' + moment().format('YYYYMMDDHHmmss') + '.csv'
+    const outputCsv = path.join(app.getPath('desktop'), fileName)
     const output = iconv.encode(rawOutput, "Shift_JIS")
     fileStream.writeFile(outputCsv, output, (error) => {
+      //手抜き
       if (error) {
-        throw new Error(error)
+        alert('エラーが発生しました。')
+        console.log(error)
+      } else {
+        alert(fileName + 'を出力しました。')
       }
     })
   })
 }
 
 // 設定ファイルの読み込みロジックを適用する
-const convertRow = (row) => {
+const convertRowCommon = (row, outputs) => {
   const parses = config.inputSettings.parses
   Object.keys(parses).forEach((key) => {
     const fromValue = row[key]
@@ -38,7 +43,7 @@ const convertRow = (row) => {
 
   const newRow = []
   // 列の生成
-  config.outputSettings.outputs.columns.forEach(column => {
+  outputs.columns.forEach(column => {
     let value = null
 
     if ('from' in column) {
@@ -50,31 +55,39 @@ const convertRow = (row) => {
     if ('convert' in column) {
       value = column.convert(value)
       if (value != undefined) {
-        // console.log("convert' in column");
-        // console.log(value);
       }
     }
 
     if (!value && 'default' in column) {
       value = column.default
       if (value != undefined && value != "") {
-        // console.log("!value && 'default' in column");
-        // console.log(value);
       }
     }
-
     newRow.push(value)
   })
 
   return newRow
 }
 
+const convertRow = (row) => {
+  return convertRowCommon(row, config.outputSettings.outputs)
+}
+
+const convertRowShipment = (row) => {
+  return convertRowCommon(row, config.outputSettings.outputsShipment)
+}
+
 // 入出力のロジック
 const convertCsv = (error, data) => {
-  const newData = data.map(convertRow)
+  let newData = data.map(convertRow)
+  const shipmentData = data.filter((row) => {
+    const shipment = row['送料']
+    return shipment !== '' && shipment !== '0'
+  }).map(convertRowShipment)
 
   const header = config.outputSettings.outputs.columns.map(column => column.name)
   newData.unshift(header)
+  newData = newData.concat(shipmentData)
   exportCsv(newData)
 }
 
