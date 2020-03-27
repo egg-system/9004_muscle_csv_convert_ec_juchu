@@ -2,9 +2,10 @@
   "name": "egg-csv-transfer",
   "version": "0.0.1",
   "description": "mascle案件のcsv変換用ツール",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
-    "convert": "node index.js"
+    "start": "electron .",
+    "convert": "node convert/index.js"
   },
   "author": "egg-systems",
   "license": "UNLICENSED",
@@ -14,5 +15,9 @@
     "csv": "^5.3.1",
     "iconv-lite": "^0.5.0",
     "moment": "^2.24.0"
+  },
+  "devDependencies": {
+    "electron": "^8.1.1",
+    "electron-packager": "^14.2.1"
   }
 }

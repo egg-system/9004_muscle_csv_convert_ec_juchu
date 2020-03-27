@@ -1,16 +1,16 @@
-const commander = require('commander')
-  .option('-c, --config-file <type>')
-  .option('-i, --input-csv <type>')
-  .option('-o, --output-csv <type>')
-commander.parse(process.argv)
-
-console.log(`設定ファイルの読み込み`);
-
+const { app } = window.require('electron').remote
+const path = window.require('path')
+const moment = require('moment')
+// const commander = require('commander')
+//   .option('-c, --config-file <type>')
+//   .option('-i, --input-csv <type>')
+//   .option('-o, --output-csv <type>')
+// commander.parse(process.argv)
 const configFilePath = __dirname + '/config.js';
 const config = require(configFilePath)
 const parseJson = config.inputSettings.json
 
-const fileStream = require('fs')
+const fileStream = window.require('fs')
 const csvParser = require('csv')
 
 // 出力のロジック
@@ -18,7 +18,7 @@ const exportCsv = (data) => {
   csvParser.stringify(data, {
     quoted: true
   }, (error, rawOutput) => {
-    const outputCsv = commander.outputCsv || 'output.csv'
+    const outputCsv = path.join(app.getPath('desktop'), 'EC受注データ_' + moment().format('YYYYMMDDHHmmss') + '.csv')
     const output = iconv.encode(rawOutput, "Shift_JIS")
     fileStream.writeFile(outputCsv, output, (error) => {
       if (error) {
@@ -80,9 +80,15 @@ const convertCsv = (error, data) => {
 
 const iconv = require("iconv-lite")
 
-fileStream
-  .createReadStream('input.csv')
-  .pipe(iconv.decodeStream('Shift_JIS'))
-  .pipe(csvParser.parse({
-    columns: parseJson
-  }, convertCsv))
+const executeCsvConvert = (filePath) => {
+  fileStream
+    .createReadStream(filePath)
+    .pipe(iconv.decodeStream('Shift_JIS'))
+    .pipe(csvParser.parse({
+      columns: parseJson
+    }, convertCsv))
+}
+
+module.exports = {
+  executeCsvConvert,
+}
