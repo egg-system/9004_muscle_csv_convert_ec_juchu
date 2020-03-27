@@ -30,8 +30,7 @@ const exportCsv = (data) => {
 
 // 設定ファイルの読み込みロジックを適用する
 const convertRow = (row) => {
-  const parses = { ...config.inputSettings.parses
-  }
+  const parses = config.inputSettings.parses
   Object.keys(parses).forEach((key) => {
     const fromValue = row[key]
     row[key] = parses[key](fromValue)
