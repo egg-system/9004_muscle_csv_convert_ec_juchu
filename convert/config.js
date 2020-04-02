@@ -199,7 +199,6 @@ module.exports = {
           name: '商品ｺｰﾄﾞ',
           from: 'JANコード',
           convert: (value) => {
-            return 'MS08-ML-T0'
             switch (value) {
               case '4582506230052':
                 return 'MS08-ML-T0'
@@ -243,7 +242,7 @@ module.exports = {
         { name: '相手発注№'},
         { name: '入力ﾊﾟﾀｰﾝ№'},
         { name: '注文番号'},
-        { name: '納品先郵便番号'},
+        { name: '納品先郵便番号', from: 'お届け先郵便番号'},
         {
           name: '納品先住所１',
           from: ['お届け先都道府県区分', 'お届け先住所１'],

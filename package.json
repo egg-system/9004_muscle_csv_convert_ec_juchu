@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "convert": "node convert/index.js"
+    "build-macOS": "electron-packager . app_mac --platform=darwin --arch=x64 --overwrite",
+    "build-windows": "electron-packager . EC受注データ変換 --platform=win32 --arch=x64 --overwrite"
   },
   "author": "egg-systems",
   "license": "UNLICENSED",
