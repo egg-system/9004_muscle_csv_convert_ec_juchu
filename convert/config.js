@@ -8,7 +8,23 @@ const convertDateFormat = (fromValue) => {
   return date.format('YYYYMMDD')
 }
 
-const today_str = moment().format('YYYYMMDD')
+const truncateForFullChar = (fromValue, size) => {
+  var b = 0;
+  for (var i = 0; i < fromValue.length; i++) {
+    //半角カナ
+    var reg = new RegExp(/^[ｦ-ﾟ]*$/);
+    if (reg.test(fromValue.charAt(i))) {
+      b += 1;
+    } else {
+      b += fromValue.charCodeAt(i) <= 255 ? 1 : 2;
+    }
+
+    if (b > size) {
+      return fromValue.substr(0, i)
+    }
+  }
+  return fromValue;
+}
 
 module.exports = {
   inputSettings: {
@@ -183,7 +199,7 @@ module.exports = {
             return value[0] + value[1]
           }
         },
-        { name: '担当者ｺｰﾄﾞ', default: '4'},
+        { name: '担当者ｺｰﾄﾞ', default: '900000'},
         { name: '部門ｺｰﾄﾞ', default: '000003'},
         { name: '売掛区分', default: '0' },
         { name: '取引区分', default: '1' },
@@ -304,21 +320,12 @@ module.exports = {
         { name: '明細消費税等'},
         {
           name: '申込者氏名',
-          from: ['氏名（姓）', '氏名（名）'],
-          convert: (values) => {
-            return values[0] + values[1]
-          }
         },
         {
           name: '申込者住所',
-          from: ['都道府県区分', '住所1', '住所2', '住所3'],
-          convert: (values) => {
-            return values[0] + values[1] + values[2] + values[3]
-          }
         },
         {
           name: '申込者電話番号',
-          from: '電話番号（メイン）'
         },
       ]
     },
