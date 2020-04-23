@@ -1,4 +1,6 @@
 const moment = require('moment')
+const { juchuNumbers } = require('./global')
+
 
 const convertDateFormat = (fromValue) => {
   let date = moment(fromValue, 'YYYY/MM/DD')
@@ -6,6 +8,12 @@ const convertDateFormat = (fromValue) => {
     return ''
   }
   return date.format('YYYYMMDD')
+}
+
+const convertRowNum = (juchuNum) => {
+  juchuNumbers.push(juchuNum)
+  const countOld = juchuNumbers.filter(e => e === juchuNum).length
+  return countOld
 }
 
 const truncateForFullChar = (fromValue, size) => {
@@ -187,7 +195,13 @@ module.exports = {
           name: '受注№',
           from: '受注コード',
         },
-        { name: '行', default: '1' },
+        {
+          name: '行',
+          from: '受注コード',
+          convert: (value) => {
+            return convertRowNum(value)
+          }
+        },
         { name: '得意先ｺｰﾄﾞ', default: '99999991'},
         { name: '得意先名１'},
         { name: '得意先名２'},
@@ -232,7 +246,13 @@ module.exports = {
         { name: '数量', from: '購入数量' },
         { name: '数量単位', default: '個' },
         { name: '単価', from: '販売単価' },
-        { name: '金額', from: '商品合計金額' },
+        {
+          name: '金額',
+          from: ['購入数量', '販売単価'],
+          convert: (values) => {
+            return Number(values[0]) * Number(values[1])
+          }
+        },
         { name: '原単価'},
         { name: '原価金額'},
         { name: '粗利'},
@@ -338,7 +358,13 @@ module.exports = {
           name: '受注№',
           from: '受注コード',
         },
-        { name: '行', default: '2' },
+        {
+          name: '行',
+          from: '受注コード',
+          convert: (value) => {
+            return convertRowNum(value)
+          }
+        },
         { name: '得意先ｺｰﾄﾞ' },
         { name: '得意先名１'},
         { name: '得意先名２'},

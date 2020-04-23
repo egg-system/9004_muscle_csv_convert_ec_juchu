@@ -12,9 +12,11 @@ const parseJson = config.inputSettings.json
 
 const fileStream = window.require('fs')
 const csvParser = require('csv')
+const { juchuNumbers } = require('./global')
 
 // 出力のロジック
 const exportCsv = (data) => {
+  juchuNumbers.splice(0, juchuNumbers.length)
   csvParser.stringify(data, {
     quoted: true
   }, (error, rawOutput) => {
