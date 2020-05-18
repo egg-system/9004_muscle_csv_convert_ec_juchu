@@ -1,5 +1,6 @@
 const moment = require('moment')
 const { juchuNumbers } = require('./global')
+const { getClosestWeekday } = require('./holiday')
 
 
 const convertDateFormat = (fromValue) => {
@@ -324,7 +325,7 @@ module.exports = {
           convert: (values) => {
             let date = moment(values[1], 'YYYY/MM/DD')
             if (!date.isValid()) {
-              return moment().format('YYYYMMDD')
+              return getClosestWeekday().format('YYYYMMDD')
             }
             if (['北海道', '福岡県', '佐賀県', '大分県', '長崎県', '熊本県', '宮崎県', '鹿児島県', '沖縄県']
               .includes(values[0])) {

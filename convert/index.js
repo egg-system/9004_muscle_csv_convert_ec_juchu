@@ -26,7 +26,7 @@ const exportCsv = (data) => {
     fileStream.writeFile(outputCsv, output, (error) => {
       //手抜き
       if (error) {
-        alert('エラーが発生しました。')
+        alert('システムエラーが発生しました。')
         console.log(error)
       } else {
         alert(fileName + 'を出力しました。')
