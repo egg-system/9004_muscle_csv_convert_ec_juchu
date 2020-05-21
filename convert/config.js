@@ -2,8 +2,9 @@ const moment = require('moment')
 const {juchuNumbers} = require('./global')
 const {convertSpecialChars, validateSpecialChars} = require('./specialChar')
 const {getClosestWeekday} = require('./holiday')
-const {janToProductId} = require('./jan')
+const {janToProductId, janToProductName, PRODUCT_NAMES} = require('./jan')
 
+const shipmentName = janToProductName()
 
 const convertDateFormat = (fromValue) => {
   let date = moment(fromValue, 'YYYY/MM/DD')
@@ -527,7 +528,7 @@ module.exports = {
           from: 'JANコード',
           convert: janToProductId
         },
-        {name: '商品名', from: '商品名'},
+        {name: '商品名', from: 'JANコード', convert: janToProductName},
         {name: '数量', from: '購入数量'},
         {name: '数量単位', default: '個'},
         {name: '単価', from: '販売単価'},
@@ -665,9 +666,9 @@ module.exports = {
         {name: '倉庫ｺｰﾄﾞ', default: '000001'},
         {
           name: '商品ｺｰﾄﾞ',
-          default: 'SF-01'
+          default: 'SHIP-01'
         },
-        {name: '商品名'},
+        {name: '商品名', default: PRODUCT_NAMES['SHIP-01']},
         {name: '数量', default: '1'},
         {name: '数量単位'},
         {name: '単価', from: '送料'},
