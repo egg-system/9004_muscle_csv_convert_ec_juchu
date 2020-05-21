@@ -1,4 +1,4 @@
-const { app } = window.require('electron').remote
+const {app} = window.require('electron').remote
 const path = window.require('path')
 const moment = require('moment')
 // const commander = require('commander')
@@ -12,7 +12,7 @@ const parseJson = config.inputSettings.json
 
 const fileStream = window.require('fs')
 const csvParser = require('csv')
-const { juchuNumbers } = require('./global')
+const {juchuNumbers} = require('./global')
 
 // 出力のロジック
 const exportCsv = (data) => {
@@ -50,7 +50,9 @@ const convertRowCommon = (row, outputs) => {
 
     if ('from' in column) {
       value = Array.isArray(column.from) ?
-        column.from.map((from) => { return row[from] }) :
+        column.from.map((from) => {
+          return row[from]
+        }) :
         row[column.from]
     }
 
@@ -81,6 +83,28 @@ const convertRowShipment = (row) => {
 
 // 入出力のロジック
 const convertCsv = (error, data) => {
+  const errorMessages = []
+  data.forEach((row, rowIndex) => {
+    config.validationSettings.forEach((setting) => {
+      field = setting.field
+      value = Array.isArray(field) ?
+        field.map((from) => {
+          return row[from]
+        }) :
+        row[field]
+      try {
+        setting.validation(value)
+      } catch(e) {
+        errorMessages.push(`${rowIndex + 2}行目：${e.message}`)
+        console.log(e)
+      }
+    })
+  })
+  if (0 < errorMessages.length) {
+    errorMessages.join('\n')
+    alert(errorMessages)
+    return
+  }
   let newData = data.map(convertRow)
   const shipmentData = data.filter((row) => {
     const shipment = row['送料']
