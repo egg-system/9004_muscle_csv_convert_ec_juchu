@@ -93,7 +93,7 @@ const convertCsv = (error, data) => {
         }) :
         row[field]
       try {
-        setting.validation(value)
+        setting.validation(value, field)
       } catch(e) {
         errorMessages.push(`${rowIndex + 2}行目：${e.message}`)
         console.log(e)
@@ -101,8 +101,7 @@ const convertCsv = (error, data) => {
     })
   })
   if (0 < errorMessages.length) {
-    errorMessages.join('\n')
-    alert(errorMessages)
+    alert(errorMessages.join('\n'))
     return
   }
   let newData = data.map(convertRow)
