@@ -2,6 +2,7 @@ const moment = require('moment')
 const {juchuNumbers} = require('./global')
 const {convertSpecialChars, validateSpecialChars} = require('./specialChar')
 const {getClosestWeekday} = require('./holiday')
+const {janToProductId} = require('./jan')
 
 
 const convertDateFormat = (fromValue) => {
@@ -524,19 +525,7 @@ module.exports = {
         {
           name: '商品ｺｰﾄﾞ',
           from: 'JANコード',
-          convert: (value) => {
-            switch (value) {
-              case '4582506230052':
-                return 'MS08-ML-T0'
-              case '4582506230069':
-                return 'MS08-SM-T0'
-              case '4582506230076':
-                return 'MS08-ML-S0'
-              case '4582506230083':
-                return 'MS08-SM-S0'
-            }
-            return ''
-          }
+          convert: janToProductId
         },
         {name: '商品名', from: '商品名'},
         {name: '数量', from: '購入数量'},

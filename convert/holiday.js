@@ -75,8 +75,6 @@ const includesMomentElement = (arr, date) => {
   return existanse !== undefined
 }
 
-
-
 module.exports = {
   getClosestWeekday,
   fetchHolidays,
