@@ -5,6 +5,7 @@
 const axios = require('axios');
 const _ = require('lodash');
 const moment = require('moment-timezone')
+moment.tz.setDefault("Asia/Tokyo")
 
 const API_KEY = 'AIzaSyBW8OfiakTWaAvhc3zHqeYTHMH7CP4h_AU';
 const ID = 'japanese__ja@holiday.calendar.google.com';
@@ -20,6 +21,13 @@ const getClosestWeekday = (date) => {
   date.add(1, 'days')
   while (includesMomentElement(holidays, date)) {
     date.add(1, 'days')
+  }
+  return date
+}
+
+const getEarlierOrSameWeekday = (date) => {
+  while (includesMomentElement(holidays, date)) {
+    date.subtract(1, 'days')
   }
   return date
 }
@@ -54,7 +62,7 @@ const fetchHolidays = async () => {
   const to = moment().tz("Asia/Tokyo").add(TARGET_MONTHS_END, 'months')
   let date = from
   //国民の祝日+土日
-  while(date.isBefore(to)) {
+  while (date.isBefore(to)) {
     //平日なら次のループへ
     if (date.day() != 6 && date.day() != 0) {
       date.add(1, 'days')
@@ -65,18 +73,42 @@ const fetchHolidays = async () => {
     }
     date.add(1, 'days')
   }
-  holidays = _.sortBy(holidaysTmp, function(holiday) { return holiday.unix() });
+  holidays = _.sortBy(holidaysTmp, function (holiday) {
+    return holiday.unix()
+  });
 }
 
 const includesMomentElement = (arr, date) => {
-  const existanse = _.find(arr, function(el) {
+  const existanse = _.find(arr, function (el) {
     return el.isSame(date)
   });
   return existanse !== undefined
 }
 
+const getShukkaYoteibi = (values) => {
+  let date = moment(values[1], 'YYYY/MM/DD')
+  if (!date.isValid()) {
+    return getClosestWeekday()
+  }
+  if (['北海道', '福岡県', '佐賀県', '大分県', '長崎県', '熊本県', '宮崎県', '鹿児島県', '沖縄県']
+    .includes(values[0])) {
+    date.subtract(2, 'days')
+  } else {
+    date.subtract(1, 'days')
+  }
+  return getEarlierOrSameWeekday(date)
+}
+
+const validateShukkaYoteibi = (values) => {
+  let date = getShukkaYoteibi(values)
+  if (date.isSameOrBefore(moment(), 'day')) {
+    throw new Error(`お届け希望日から計算した出荷予定日が今日以前（${date.format('YYYY/MM/DD')}）になってしまいます。`)
+  }
+  return true
+}
+
 module.exports = {
-  getClosestWeekday,
+  getShukkaYoteibi,
+  validateShukkaYoteibi,
   fetchHolidays,
-  holidays,
 }

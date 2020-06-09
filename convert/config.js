@@ -1,7 +1,8 @@
-const moment = require('moment')
+const moment = require('moment-timezone')
+moment.tz.setDefault("Asia/Tokyo")
 const {juchuNumbers} = require('./global')
 const {convertSpecialChars, validateSpecialChars} = require('./specialChar')
-const {getClosestWeekday} = require('./holiday')
+const {getShukkaYoteibi, validateShukkaYoteibi} = require('./holiday')
 const {janToProductId, janToProductName, PRODUCT_NAMES} = require('./jan')
 
 const shipmentName = janToProductName()
@@ -607,16 +608,8 @@ module.exports = {
         {
           name: '出荷予定日',
           from: ['お届け先都道府県区分', 'お届け希望日'],
-          convert: (values) => {
-            let date = moment(values[1], 'YYYY/MM/DD')
-            if (!date.isValid()) {
-              return getClosestWeekday().format('YYYYMMDD')
-            }
-            if (['北海道', '福岡県', '佐賀県', '大分県', '長崎県', '熊本県', '宮崎県', '鹿児島県', '沖縄県']
-              .includes(values[0])) {
-              return date.subtract(2, 'days').format('YYYYMMDD')
-            }
-            return date.subtract(1, 'days').format('YYYYMMDD')
+          convert: (value) => {
+            return getShukkaYoteibi(value).format('YYYYMMDD')
           }
         },
         {name: '消費税分類'},
@@ -751,6 +744,10 @@ module.exports = {
     {
       field: 'お届け先住所３',
       validation: validateSpecialChars
+    },
+    {
+      field: ['お届け先都道府県区分', 'お届け希望日'],
+      validation: validateShukkaYoteibi
     }
   ]
 }
