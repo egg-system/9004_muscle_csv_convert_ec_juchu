@@ -544,7 +544,7 @@ module.exports = {
         {name: '原価金額'},
         {name: '粗利'},
         {name: '単価掛率'},
-        {name: '課税区分', default: '1'},
+        {name: '課税区分', default: '0'}, //0:税抜、1:税込
         {name: '消費税率％', default: '10'},
         {name: '内消費税等'},
         {name: '完納区分'},
