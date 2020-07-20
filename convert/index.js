@@ -115,6 +115,7 @@ const convertCsv = (error, data) => {
   const couponData = data.filter((row) => {
     if (
       typeof row['割引合計金額（商品）'] === 'undefined' ||
+      row['割引合計金額（商品）'] == '' ||
       isNaN(row['割引合計金額（商品）']) ||
       row['割引合計金額（商品）'] === '0'
     ) {
