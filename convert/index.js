@@ -81,6 +81,9 @@ const convertRowShipment = (row) => {
   return convertRowCommon(row, config.outputSettings.outputsShipment)
 }
 
+const convertRowCoupon = (row) => {
+  return convertRowCommon(row, config.outputSettings.outputsCoupon)
+}
 // 入出力のロジック
 const convertCsv = (error, data) => {
   const errorMessages = []
@@ -94,7 +97,7 @@ const convertCsv = (error, data) => {
         row[field]
       try {
         setting.validation(value, field)
-      } catch(e) {
+      } catch (e) {
         errorMessages.push(`${rowIndex + 2}行目：${e.message}`)
         console.log(e)
       }
@@ -109,10 +112,21 @@ const convertCsv = (error, data) => {
     const shipment = row['送料']
     return shipment !== '' && shipment !== '0'
   }).map(convertRowShipment)
+  const couponData = data.filter((row) => {
+    if (
+      typeof row['割引合計金額（商品）'] === 'undefined' ||
+      isNaN(row['割引合計金額（商品）']) ||
+      row['割引合計金額（商品）'] === '0'
+    ) {
+      return false
+    }
+    return true
+  }).map(convertRowCoupon)
 
   const header = config.outputSettings.outputs.columns.map(column => column.name)
   newData.unshift(header)
   newData = newData.concat(shipmentData)
+  newData = newData.concat(couponData)
   exportCsv(newData)
 }
 

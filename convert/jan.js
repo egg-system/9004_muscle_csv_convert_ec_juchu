@@ -2,7 +2,7 @@ const janToProductId = (jan) => {
   const codes = {
     4582506230052: 'MS08-ML-T0',
     4582506230069: 'MS08-SM-T0',
-    4582506230076: 'MS08-ML-S0',
+    4582506230076: 'MS08-ML-S0-B',
     4582506230083: 'MS08-SM-S0',
     4582506230427: 'MS953000',
     4582506230199: 'MS06-001',
@@ -115,6 +115,7 @@ const PRODUCT_NAMES = {
   'MS968005': 'ﾏｯｽﾙｽｰﾂEveryﾁﾗｼ(500枚)',
   'SF-01': '在庫管理料',
   'SHIP-01': '送料',
+  'COP-02' : 'ECクーポン'
 }
 
 const janToProductName = (jan) => {
