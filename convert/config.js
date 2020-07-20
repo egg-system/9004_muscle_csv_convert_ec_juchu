@@ -4,7 +4,7 @@ const {juchuNumbers} = require('./global')
 const {convertSpecialChars, validateSpecialChars} = require('./specialChar')
 const {getShukkaYoteibi, validateShukkaYoteibi} = require('./holiday')
 const {janToProductId, janToProductName, PRODUCT_NAMES} = require('./jan')
-const {getCustomerCode} = require('./functions')
+const {getCustomerCode, getKyouRyokuKaisyaCd} = require('./functions')
 
 const shipmentName = janToProductName()
 
@@ -577,7 +577,7 @@ module.exports = {
         {name: '納品先住所２', from: 'お届け先住所２', convert: convertSpecialChars},
         {name: '納品先住所３', from: 'お届け先住所３', convert: convertSpecialChars},
         {name: '納品先電話番号', from: 'お届け先電話番号'},
-        {name: '協力会社CD'},
+        {name: '協力会社CD', from: '決済方法', convert: getKyouRyokuKaisyaCd},
         {
           name: '配達指定時間帯CD',
           from: 'お届け希望時間',
@@ -741,8 +741,8 @@ module.exports = {
         {name: '担当者ｺｰﾄﾞ'},
         {name: '部門ｺｰﾄﾞ'},
         {name: '売掛区分'},
-        {name: '取引区分', default: '1'},
-        {name: '取引区分属性', default: '1'},
+        {name: '取引区分', default: '3'},
+        {name: '取引区分属性', default: '3'},
         {name: '納期'},
         {name: 'オーダー№'},
         {name: '倉庫ｺｰﾄﾞ', default: '000001'},

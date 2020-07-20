@@ -14,7 +14,15 @@ const getCustomerCode = (fromValue) => {
   return ''
 }
 
+const getKyouRyokuKaisyaCd = (fromValue) => {
+  if (fromValue == '代金引換') {
+    return '41'; //ヤマト便（代引き）
+  }
+  return '1'; //ヤマト便
+}
+
 
 module.exports = {
   getCustomerCode,
+  getKyouRyokuKaisyaCd,
 }
