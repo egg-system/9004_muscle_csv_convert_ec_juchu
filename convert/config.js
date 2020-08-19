@@ -599,7 +599,7 @@ module.exports = {
             return ''
           }
         },
-        {name: '特記事項'},
+        {name: '特記事項', from: '請求合計金額'},
         {name: '売上除外区分'},
         {name: 'メールアドレス', from: 'メールアドレス（メイン）'},
         {name: '携帯TEL', from: '携帯電話番号'},
