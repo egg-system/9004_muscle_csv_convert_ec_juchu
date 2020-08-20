@@ -599,7 +599,13 @@ module.exports = {
             return ''
           }
         },
-        {name: '特記事項', from: '請求合計金額'},
+        {
+          name: '特記事項',
+          from: ['決済方法', '請求合計金額'],
+          convert: (value) => {
+            return value[0] == '代金引換' ? value[1] : '';
+          }
+        },
         {name: '売上除外区分'},
         {name: 'メールアドレス', from: 'メールアドレス（メイン）'},
         {name: '携帯TEL', from: '携帯電話番号'},
