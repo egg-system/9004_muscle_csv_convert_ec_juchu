@@ -90,7 +90,11 @@ const getShukkaYoteibi = (values) => {
   if (!date.isValid()) {
     return getClosestWeekday()
   }
-  if (['北海道', '福岡県', '佐賀県', '大分県', '長崎県', '熊本県', '宮崎県', '鹿児島県', '沖縄県']
+  console.log(values[0])
+  if ([
+    '北海道', '福岡県', '佐賀県', '大分県', '長崎県', '熊本県', '宮崎県', '鹿児島県', '沖縄県',
+    '青森県', '兵庫県', '岡山県', '広島県', '山口県', '鳥取県', '島根県', '徳島県', '香川県', '高知県', '愛媛県'
+  ]
     .includes(values[0])) {
     date.subtract(2, 'days')
   } else {
