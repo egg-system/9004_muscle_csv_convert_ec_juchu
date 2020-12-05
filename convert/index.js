@@ -21,7 +21,7 @@ const exportCsv = (data) => {
     quoted: true
   }, (error, rawOutput) => {
     const fileName = 'EC受注データ_' + moment().format('YYYYMMDDHHmmss') + '.csv'
-    const outputCsv = path.join(app.getPath('desktop'), fileName)
+    const outputCsv = path.join(app.getPath('downloads'), fileName)
     const output = iconv.encode(rawOutput, "Shift_JIS")
     fileStream.writeFile(outputCsv, output, (error) => {
       //手抜き
