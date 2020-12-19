@@ -108,9 +108,14 @@ const convertCsv = (error, data) => {
     return
   }
   let newData = data.map(convertRow)
+  const juchuNumbersOfShipment = []
   const shipmentData = data.filter((row) => {
     const shipment = row['送料']
-    return shipment !== '' && shipment !== '0'
+    if (shipment !== '' && shipment !== '0' && !juchuNumbersOfShipment.includes(row['受注コード'])) {
+      juchuNumbersOfShipment.push(row['受注コード'])
+      return true
+    }
+    return false
   }).map(convertRowShipment)
   const couponData = data.filter((row) => {
     if (
