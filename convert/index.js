@@ -84,6 +84,10 @@ const convertRowShipment = (row) => {
 const convertRowCoupon = (row) => {
   return convertRowCommon(row, config.outputSettings.outputsCoupon)
 }
+
+const convertRowTax = (row) => {
+  return convertRowCommon(row, config.outputSettings.outputsTax)
+}
 // 入出力のロジック
 const convertCsv = (error, data) => {
   const errorMessages = []
@@ -117,6 +121,7 @@ const convertCsv = (error, data) => {
     }
     return false
   }).map(convertRowShipment)
+
   const couponData = data.filter((row) => {
     if (
       typeof row['割引合計金額（商品）'] === 'undefined' ||
@@ -129,10 +134,17 @@ const convertCsv = (error, data) => {
     return true
   }).map(convertRowCoupon)
 
+  const taxData = data.filter((row, i, self) => {
+    return self.findIndex((_row => {
+      return _row['受注コード'] === row['受注コード']
+    })) === i
+  }).map(convertRowTax)
+
   const header = config.outputSettings.outputs.columns.map(column => column.name)
   newData.unshift(header)
   newData = newData.concat(shipmentData)
   newData = newData.concat(couponData)
+  newData = newData.concat(taxData)
   exportCsv(newData)
 }
 

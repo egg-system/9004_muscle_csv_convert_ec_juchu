@@ -1,3 +1,7 @@
+const moment = require('moment-timezone')
+moment.tz.setDefault("Asia/Tokyo")
+const {juchuNumbers} = require('./global')
+
 const getCustomerCode = (fromValue) => {
   switch (fromValue) {
     case 'クレジットカード':
@@ -21,8 +25,23 @@ const getKyouRyokuKaisyaCd = (fromValue) => {
   return '1'; //ヤマト便
 }
 
+const convertRowNum = (juchuNum) => {
+  juchuNumbers.push(juchuNum)
+  const countOld = juchuNumbers.filter(e => e === juchuNum).length
+  return countOld
+}
+
+const convertDateFormat = (fromValue) => {
+  let date = moment(fromValue, 'YYYY/MM/DD')
+  if (!date.isValid()) {
+    return ''
+  }
+  return date.format('YYYYMMDD')
+}
 
 module.exports = {
   getCustomerCode,
   getKyouRyokuKaisyaCd,
+  convertRowNum,
+  convertDateFormat,
 }
