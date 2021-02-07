@@ -580,6 +580,8 @@ module.exports = {
                 return '1214'
               case '14～16時':
                 return '1416'
+              case '16～18時':
+                return '1618'
               case '18～20時':
                 return '1820'
               case '19～21時':
