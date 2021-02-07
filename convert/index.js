@@ -141,10 +141,26 @@ const convertCsv = (error, data) => {
   }).map(convertRowTax)
 
   const header = config.outputSettings.outputs.columns.map(column => column.name)
-  newData.unshift(header)
+  console.log(newData)
   newData = newData.concat(shipmentData)
   newData = newData.concat(couponData)
   newData = newData.concat(taxData)
+  console.log(newData)
+  newData.sort((row1, row2) => {
+    if (row1[header.indexOf('受注№')] !== row2[header.indexOf('受注№')]) {
+      return Number(row1[header.indexOf('受注№')]) - Number(row2[header.indexOf('受注№')])
+    }
+    //同じ受注コードであれば課税区分が9の行（消費税の行）が一番後ろにソートされる
+    if (Number(row1[header.indexOf('課税区分')]) == 9) {
+      return 1;
+    }
+    if (Number(row2[header.indexOf('課税区分')]) == 9) {
+      return -1;
+    }
+    //その他は行の値でソート
+    return row1[header.indexOf('行')] < row2[header.indexOf('行')]
+  })
+  newData.unshift(header)
   exportCsv(newData)
 }
 

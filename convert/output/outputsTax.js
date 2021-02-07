@@ -38,7 +38,7 @@ const outputsTax = {
     {name: '原価金額'},
     {name: '粗利'},
     {name: '単価掛率'},
-    {name: '課税区分', default: '9'},
+    {name: '課税区分', default: 9},
     {name: '消費税率％', default: 10},
     {name: '内消費税等', from: '消費税合計'},
     {name: '完納区分'},
