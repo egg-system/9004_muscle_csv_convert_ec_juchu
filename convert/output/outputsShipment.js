@@ -1,5 +1,6 @@
 const {PRODUCT_NAMES} = require('../jan')
 const {convertRowNum} = require('../functions')
+const {getShukkaYoteibi} = require('../holiday')
 
 //送料の出力設定
 const outputsShipment = {
@@ -78,7 +79,12 @@ const outputsShipment = {
     {name: 'EC受注コード', from: '受注コード'},
     {name: 'クレカ決済状況'},
     {name: 'ｵﾘｺﾛｰﾝ申込案内'},
-    {name: '出荷予定日'},
+    {name: '出荷予定日',
+    from: ['お届け先都道府県区分', 'お届け希望日'],
+      convert: (value) => {
+        return getShukkaYoteibi(value).format('YYYYMMDD')
+      }
+    },
     {name: '消費税分類'},
     {name: '伝票消費税計算区分'},
     {name: '明細区分'},
