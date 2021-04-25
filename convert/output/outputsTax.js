@@ -1,5 +1,14 @@
 const {convertRowNum, convertDateFormat, getCustomerCode} = require('../functions')
 
+const getTaxAmount = (value) => {
+  const tax = value[0];
+  const shipment = value[1];
+  if (shipment === '' || shipment === '0') {
+    return tax;
+  }
+  return Number(tax) + 181;
+}
+
 const outputsTax = {
   // 出力CSVのカラムを配列で設定する
   columns: [
@@ -33,14 +42,14 @@ const outputsTax = {
     {name: '数量'},
     {name: '数量単位'},
     {name: '単価'},
-    {name: '金額', from: '消費税合計'},
+    {name: '金額', from: ['消費税合計', '送料'], convert: getTaxAmount },
     {name: '原単価'},
     {name: '原価金額'},
     {name: '粗利'},
     {name: '単価掛率'},
     {name: '課税区分', default: 9},
     {name: '消費税率％', default: 10},
-    {name: '内消費税等', from: '消費税合計'},
+    {name: '内消費税等', from: ['消費税合計', '送料'], convert: getTaxAmount },
     {name: '完納区分'},
     {name: '売上済数量'},
     {name: '売上済金額'},
