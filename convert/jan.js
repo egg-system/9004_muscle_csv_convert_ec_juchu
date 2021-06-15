@@ -20,6 +20,7 @@ const janToProductId = (jan) => {
     4582506230328: 'MS06-014',
     4582506230335: 'MS06-015',
     4582506230298: 'MS06-011',
+    4582506230977: 'MS06-043',
   }
   if (!codes.hasOwnProperty(jan)) {
     return ''
