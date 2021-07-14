@@ -16,7 +16,7 @@ let holidays = null
 
 const getClosestWeekday = (date) => {
   if (date == undefined) {
-    date = moment().tz("Asia/Tokyo").startOf('day')
+    date = moment().startOf('day')
   }
   date.add(1, 'days')
   while (includesMomentElement(holidays, date)) {
@@ -33,15 +33,15 @@ const getEarlierOrSameWeekday = (date) => {
 }
 
 const getNationalHolidays = async () => {
-  const from = moment().tz("Asia/Tokyo").subtract(TARGET_MONTHS_START, 'months').format('YYYY-MM-DD') + 'T00:00:00Z'
-  const to = moment().tz("Asia/Tokyo").add(TARGET_MONTHS_END, 'months').format('YYYY-MM-DD') + 'T00:00:00Z'
+  const from = moment().subtract(TARGET_MONTHS_START, 'months').format('YYYY-MM-DD') + 'T00:00:00Z'
+  const to = moment().add(TARGET_MONTHS_END, 'months').format('YYYY-MM-DD') + 'T00:00:00Z'
 
   // Googleに渡す日付を作成
   try {
     const res = await axios.get(`https://www.googleapis.com/calendar/v3/calendars/${ID}/events?key=${API_KEY}&timeMin=${from}&timeMax=${to}`);
     //console.log(res)
     return _.map(res.data.items, (item) => {
-      return moment(item.start.date).tz("Asia/Tokyo")
+      return moment(item.start.date)
     });
   } catch (error) {
     const {
@@ -58,8 +58,8 @@ const fetchHolidays = async () => {
     return
   }
   let holidaysTmp = await getNationalHolidays()
-  const from = moment().tz("Asia/Tokyo").subtract(TARGET_MONTHS_START, 'months').startOf('day')
-  const to = moment().tz("Asia/Tokyo").add(TARGET_MONTHS_END, 'months')
+  const from = moment().subtract(TARGET_MONTHS_START, 'months').startOf('day')
+  const to = moment().add(TARGET_MONTHS_END, 'months')
   let date = from
   //国民の祝日+土日
   while (date.isBefore(to)) {
@@ -88,7 +88,7 @@ const includesMomentElement = (arr, date) => {
 const getShukkaYoteibi = (values) => {
   let date = moment(values[1], 'YYYY/MM/DD')
   if (!date.isValid()) {
-    return getClosestWeekday()
+    return moment().startOf('day')
   }
   console.log(values[0])
   if ([
@@ -105,7 +105,7 @@ const getShukkaYoteibi = (values) => {
 
 const validateShukkaYoteibi = (values) => {
   let date = getShukkaYoteibi(values)
-  if (date.isSameOrBefore(moment(), 'day')) {
+  if (date.isBefore(moment(), 'day')) {
     throw new Error(`お届け希望日から計算した出荷予定日が今日以前（${date.format('YYYY/MM/DD')}）になってしまいます。`)
   }
   return true
