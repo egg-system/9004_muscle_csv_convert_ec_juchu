@@ -7,7 +7,7 @@ const _ = require('lodash');
 const moment = require('moment-timezone')
 moment.tz.setDefault("Asia/Tokyo")
 
-const API_KEY = 'AIzaSyBW8OfiakTWaAvhc3zHqeYTHMH7CP4h_AU';
+const API_KEY = 'AIzaSyBuDOB_9lGW99W-AbiH0uvJQkJq2fSQRuE';
 const ID = 'japanese__ja@holiday.calendar.google.com';
 const TARGET_MONTHS_START = 6
 const TARGET_MONTHS_END = 6
