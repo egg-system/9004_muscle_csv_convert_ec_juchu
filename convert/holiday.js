@@ -18,7 +18,6 @@ const getClosestWeekday = (date) => {
   if (date == undefined) {
     date = moment().startOf('day')
   }
-  date.add(1, 'days')
   while (includesMomentElement(holidays, date)) {
     date.add(1, 'days')
   }
@@ -88,7 +87,7 @@ const includesMomentElement = (arr, date) => {
 const getShukkaYoteibi = (values) => {
   let date = moment(values[1], 'YYYY/MM/DD')
   if (!date.isValid()) {
-    return moment().startOf('day')
+    return getClosestWeekday(moment().startOf('day'))
   }
   console.log(values[0])
   if ([
