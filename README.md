@@ -5,6 +5,10 @@
 Node.js-Electronで実装したWindows-GUIアプリです。https://www.electronjs.org/<br>
 開発環境のOSもWindowsしか検証していません。
 
+## 仕様書
+https://docs.google.com/spreadsheets/d/1b6zkpUhAZE5wPsLhz--wmOrhc1FX6lDE3m34fd0h7uA/edit?usp=sharing
+※権限付与依頼はつばさまで。
+
 ## 必要になると思われる開発スキル
 - git
 - nodejs
