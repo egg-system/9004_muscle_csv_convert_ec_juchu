@@ -6,13 +6,16 @@ const moment = require('moment')
 //   .option('-i, --input-csv <type>')
 //   .option('-o, --output-csv <type>')
 // commander.parse(process.argv)
-const configFilePath = __dirname + '/config.js';
+const configFilePath = __dirname + '/config.js'
 const config = require(configFilePath)
 const parseJson = config.inputSettings.json
 
 const fileStream = window.require('fs')
 const csvParser = require('csv')
 const {juchuNumbers} = require('./global')
+
+// クーポンが出力された受注コードを格納
+let couponOutputlist = []
 
 // 出力のロジック
 const exportCsv = (data) => {
@@ -90,7 +93,9 @@ const convertRowTax = (row) => {
 }
 // 入出力のロジック
 const convertCsv = (error, data) => {
+  console.log("data",data)
   const errorMessages = []
+  // バリデーション
   data.forEach((row, rowIndex) => {
     config.validationSettings.forEach((setting) => {
       field = setting.field
@@ -107,10 +112,12 @@ const convertCsv = (error, data) => {
       }
     })
   })
+  // エラーメッセージがある場合は表示して終了
   if (0 < errorMessages.length) {
     alert(errorMessages.join('\n'))
     return
   }
+  // バリデーション
   let newData = data.map(convertRow)
   const juchuNumbersOfShipment = []
   const shipmentData = data.filter((row) => {
@@ -123,6 +130,7 @@ const convertCsv = (error, data) => {
   }).map(convertRowShipment)
 
   const couponData = data.filter((row) => {
+
     if (
       typeof row['割引合計金額（商品）'] === 'undefined' ||
       row['割引合計金額（商品）'] == '' ||
@@ -131,6 +139,17 @@ const convertCsv = (error, data) => {
     ) {
       return false
     }
+  
+    // クーポン出力リストを照合
+    // 受注コードが存在する場合
+    if(couponOutputlist.includes(row['受注コード'])){
+      // クーポンデータを出力しない
+      return false
+    }
+    // 受注コードが存在しなかった場合
+    // クーポン出力リストに受注コードを追加
+    couponOutputlist.push(row['受注コード'])
+
     return true
   }).map(convertRowCoupon)
 
@@ -141,21 +160,19 @@ const convertCsv = (error, data) => {
   }).map(convertRowTax)
 
   const header = config.outputSettings.outputs.columns.map(column => column.name)
-  console.log(newData)
   newData = newData.concat(shipmentData)
   newData = newData.concat(couponData)
   newData = newData.concat(taxData)
-  console.log(newData)
   newData.sort((row1, row2) => {
     if (row1[header.indexOf('受注№')] !== row2[header.indexOf('受注№')]) {
       return Number(row1[header.indexOf('受注№')]) - Number(row2[header.indexOf('受注№')])
     }
     //同じ受注コードであれば課税区分が9の行（消費税の行）が一番後ろにソートされる
     if (Number(row1[header.indexOf('課税区分')]) == 9) {
-      return 1;
+      return 1
     }
     if (Number(row2[header.indexOf('課税区分')]) == 9) {
-      return -1;
+      return -1
     }
     //その他は行の値でソート
     return row1[header.indexOf('行')] < row2[header.indexOf('行')]
@@ -167,6 +184,10 @@ const convertCsv = (error, data) => {
 const iconv = require("iconv-lite")
 
 const executeCsvConvert = (filePath) => {
+
+  // クーポン出力リストを初期化
+  couponOutputlist = []
+
   fileStream
     .createReadStream(filePath)
     .pipe(iconv.decodeStream('Shift_JIS'))
