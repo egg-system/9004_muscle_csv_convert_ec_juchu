@@ -29,7 +29,6 @@ const convertSpecialChars = (str) => {
 
 const validateSpecialChars = (str, fieldName) => {
   const pattern = /(∮|∟|⊿|纊|褜|鍈|銈|蓜|俉|炻|昱|棈|鋹|曻|彅|丨|仡|仼|伀|伃|伹)/
-  console.log(pattern.test(str))
   if (pattern.test(str)) {
     throw new Error(`${fieldName}に機種依存文字が含まれているため登録できません。`)
   }

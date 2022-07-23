@@ -496,7 +496,6 @@ module.exports = {
           name: '納品先名',
           from: ['お届け先氏名（姓）', 'お届け先氏名（名）'],
           convert: (value) => {
-            console.log(value[0] + value[1])
             return convertSpecialChars(value[0] + value[1])
           }
         },
