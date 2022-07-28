@@ -94,6 +94,8 @@ const PRODUCT_NAMES = {
   'MS08-SM-T0-B': 'ﾏｯｽﾙｽｰﾂEveryﾀｲﾄﾌｨｯﾄSMｻｲｽﾞ',
   'MS08-SM-TC': 'ﾏｯｽﾙｽｰﾂEveryﾀｲﾄﾌｨｯﾄSMｻｲｽﾞ（中華圏版）',
   'MS08-SM-TE': 'ﾏｯｽﾙｽｰﾂEveryﾀｲﾄﾌｨｯﾄSMｻｲｽﾞ（英語圏版）',
+  'MS10-M0-00': 'ﾏｯｽﾙｽｰﾂ GS-BACK Mｻｲｽﾞ',
+  'MS10-S0-00': 'ﾏｯｽﾙｽｰﾂ GS-BACK Sｻｲｽﾞ',
   'MS901000': 'MS Power用 ｴｱｰﾎｰｽ-1',
   'MS901100': 'MS Power用 ｴｱｰﾎｰｽ-2',
   'MS903200': 'MS Power用 外装ｶﾊﾞｰRF-2',
