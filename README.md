@@ -18,10 +18,10 @@ https://docs.google.com/spreadsheets/d/1b6zkpUhAZE5wPsLhz--wmOrhc1FX6lDE3m34fd0h
 ## 開発環境構築
 - 開発端末にnodejsが入ってなければインストールしてください。
 - `npm install`を実行してライブラリーをインストールしてください。
-- `nmp start`を実行するとGUIが起動されます。
+- `npm start`を実行するとGUIが起動されます。
 
 ## exeファイルのコンパイル
-- `nmp run build-windows`を実行すると実行ファイルがコンパイルされます。
+- `npm run build-windows`を実行すると実行ファイルがコンパイルされます。
 - `EC受注データ変換-win32-x64`というディレクトリが作成されます。このディレクトリの中のファイル一式がエンドユーザーの端末でツールを実行するために必要なファイルとなります。
 
 ## ファイルの役割
