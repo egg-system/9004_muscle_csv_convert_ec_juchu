@@ -35,12 +35,14 @@ const janToProductId = (jan) => {
     4946452072737: '307811',
     4582506231332: 'MS11-M0-00',
     4582506231349: 'MS11-S0-00',
-  }
+    4946452074380: 'MS13-00',
+    4582506231660: 'MS13-001',
+  };
   if (!codes.hasOwnProperty(jan)) {
-    return ''
+    return '';
   }
-  return codes[jan]
-}
+  return codes[jan];
+};
 
 const PRODUCT_NAMES = {
   888888: '値引き',
@@ -145,18 +147,20 @@ const PRODUCT_NAMES = {
   307811: 'ﾏｯｽﾙｽｰﾂ Soft-Light 下ﾊﾟｰﾂSｻｲｽﾞ',
   'MS11-M0-00': 'ﾏｯｽﾙｽｰﾂ Exo-Power Mｻｲｽﾞ',
   'MS11-S0-00': 'ﾏｯｽﾙｽｰﾂ Exo-Power Sｻｲｽﾞ',
-}
+  'MS13-00': 'ﾏｯｽﾙｽｰﾂ Soft-Power',
+  'MS13-001': 'ﾏｯｽﾙｽｰﾂ Soft-Power 腰パッド',
+};
 
 const janToProductName = (jan) => {
-  const id = janToProductId(jan)
+  const id = janToProductId(jan);
   if (id == '') {
-    return ''
+    return '';
   }
-  return PRODUCT_NAMES[id]
-}
+  return PRODUCT_NAMES[id];
+};
 
 module.exports = {
   janToProductId,
   janToProductName,
   PRODUCT_NAMES,
-}
+};
