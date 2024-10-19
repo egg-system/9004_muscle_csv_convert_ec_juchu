@@ -8,3 +8,6 @@ EC受注データ変換-win32-x64
 EC受注データ変換-win32-x64.zip
 testdata
 result
+.vscode
+.eslintrc.json
+.prettierrc
